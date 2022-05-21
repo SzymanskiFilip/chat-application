@@ -5,8 +5,23 @@ function App() {
 
   const [connected, setConnected] = useState(false);
 
+  
+
   function joinChat(username){
-    console.log("hello" + username)
+    let webSocket = new WebSocket("ws://localhost:8080/chat");
+
+    webSocket.onopen = (event) => {
+      console.log("opened", event);
+    };
+
+    webSocket.onmessage = (event) => {
+      console.log("message", event);
+    };
+
+    webSocket.onclose = (e) => {
+      console.log("connection closed", e);
+    };
+
     setConnected(true);
   }
 
