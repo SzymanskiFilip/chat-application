@@ -5,11 +5,12 @@ import JoinWindow from "./Components/JoinWindow";
 function App() {
 
   const [connected, setConnected] = useState(false);
-
+  const [username, setUsername] = useState("");
   
 
   function joinChat(username){
     let webSocket = new WebSocket("ws://localhost:8080/chat");
+    setUsername(username);
 
     webSocket.onopen = (event) => {
       setConnected(true);
@@ -36,7 +37,7 @@ function App() {
       {
         connected
         ?
-        <ChatWindow />
+        <ChatWindow username={username}/>
         :
         <JoinWindow handler={joinChat}/>
       }

@@ -1,8 +1,22 @@
 import ChatRow from "./ChatRow";
+import MessageDTO from "../DTO/MessageDTO";
 
 function ChatWindow(props){
 
-    let messages = ["Will: hello!", "Dave: HI!"];
+    let currentUser = props.username;
+
+    let messages = [];
+    messages.push(new MessageDTO("filip", "msg"));
+    messages.push(new MessageDTO("Dave", "msg123"));
+    messages.push(new MessageDTO("Cobra", "msg333"));
+
+    function getDirection(username){
+        if(username === currentUser){
+            return "justify-end";
+        } else {
+            return "justify-start";
+        }
+    }
 
     return(
         <div className="bg-white w-window h-window absolute top-1/2 left-1/2 transform
@@ -10,7 +24,7 @@ function ChatWindow(props){
             {
                 messages.map((m) => {
                     return(
-                        <ChatRow direction={"justify-end"}/>
+                        <ChatRow direction={getDirection(m.username)} key={m.key} message={m}/>
                     )
                 })
             }
