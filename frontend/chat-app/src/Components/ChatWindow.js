@@ -1,34 +1,42 @@
-import ChatRow from "./ChatRow";
-import MessageDTO from "../DTO/MessageDTO";
+import { useState } from "react";
 
-function ChatWindow(props){
+function ChatWindow({username}){
 
-    let currentUser = props.username;
+    const [messages, setMessages] = useState([]);
 
-    let messages = [];
-    messages.push(new MessageDTO("filip", "msg"));
-    messages.push(new MessageDTO("Dave", "msg123"));
-    messages.push(new MessageDTO("Cobra", "msg333"));
+    let socket = new WebSocket("ws://localhost:8080/chat");
 
-    function getDirection(username){
-        if(username === currentUser){
-            return "justify-end";
-        } else {
-            return "justify-start";
-        }
+    socket.onopen = function(e){
+        console.log("Connected");
+    }
+
+    socket.onmessage = function(e){
+        console.log(JSON.parse(e.data))
+        setMessages([...messages, JSON.parse(e.data)]);
+    }
+
+    socket.onclose = function(e){
+        alert("Connection closed");
+    }
+
+    function sendMsg(){
+        socket.send(JSON.stringify({username: username, message: "test", key: Math.random() * 1000}));
     }
 
     return(
-        <div className="bg-white w-window h-window absolute top-1/2 left-1/2 transform
-        -translate-x-1/2 -translate-y-1/2 rounded ">
+        <div>
+            <div className="bg-white w-window h-window absolute top-1/2 left-1/2 transform
+            -translate-x-1/2 -translate-y-1/2 rounded">
             {
                 messages.map((m) => {
                     return(
-                        <ChatRow direction={getDirection(m.username)} key={m.key} message={m}/>
+                        <h1 key={m.key}>{m.username}:{m.message}</h1>
                     )
                 })
             }
-        </div>
+            </div>
+        <button className="bg-white" onClick={sendMsg}>Send</button>
+        </div> 
     )
 }
 
