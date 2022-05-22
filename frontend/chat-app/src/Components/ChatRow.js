@@ -1,17 +1,16 @@
 function ChatRow(props){
 
-    let direction = props.direction;
-    let bgOwn = "white";
+    let backgroundAndDirection = "bg-white";
 
-    if(direction === "justify-end"){
-        bgOwn = "bg-white";
+    if(props.currentUser === props.username){
+        backgroundAndDirection = "bg-white justify-end";
     } else {
-        bgOwn = "bg-green-400";
+        backgroundAndDirection = "bg-green-500 justify-start";
     }
 
     return(
-        <div className={"px-2 py-2 flex flex-row border-b-2 border-black" + " " + direction + " " + bgOwn}>
-            <h1>{props.message.username}: {props.message.message}</h1>
+        <div className={"px-2 py-2 flex flex-row border-b-2 border-black" + " " + backgroundAndDirection}>
+            <h1>{props.username}: {props.message}</h1>
         </div>
     )
 }

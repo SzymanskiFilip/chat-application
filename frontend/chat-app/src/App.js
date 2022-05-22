@@ -7,6 +7,8 @@ function App() {
   const [connected, setConnected] = useState(false);
   const [username, setUsername] = useState("");
 
+  let socket = new WebSocket("ws://localhost:8080/chat");
+
   function joinChat(username){
     setUsername(username);
     setConnected(true);
@@ -17,7 +19,7 @@ function App() {
       {
         connected
         ?
-        <ChatWindow username={username} />
+        <ChatWindow username={username} socket={socket}/>
         :
         <JoinWindow handler={joinChat}/>
       }
