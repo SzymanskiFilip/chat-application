@@ -1,4 +1,5 @@
 import {useState} from "react";
+import ChatWindow from "./Components/ChatWindow";
 import JoinWindow from "./Components/JoinWindow";
 
 function App() {
@@ -11,18 +12,23 @@ function App() {
     let webSocket = new WebSocket("ws://localhost:8080/chat");
 
     webSocket.onopen = (event) => {
+      setConnected(true);
       console.log("opened", event);
     };
 
     webSocket.onmessage = (event) => {
-      console.log("message", event);
+      console.log("message", event.data);
     };
 
     webSocket.onclose = (e) => {
       console.log("connection closed", e);
     };
 
-    setConnected(true);
+    /*
+    setInterval(() => {
+      webSocket.send("Hello!");
+    }, 2000);
+    */
   }
 
   return (
@@ -30,7 +36,7 @@ function App() {
       {
         connected
         ?
-        <h1>123</h1>
+        <ChatWindow />
         :
         <JoinWindow handler={joinChat}/>
       }
